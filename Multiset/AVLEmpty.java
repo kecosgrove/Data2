@@ -3,7 +3,7 @@ package Multiset;
 /**
  * Created by User on 10/26/2014.
  */
-public class AVLEmpty<D> implements Multiset {
+public class AVLEmpty<D extends Comparable<D>> implements Multiset<D> {
 
     public boolean isEmpty() {
         return true;
@@ -13,20 +13,24 @@ public class AVLEmpty<D> implements Multiset {
         return 0;
     }
 
-    public AVL rotate(boolean toRight) {
+    public Multiset rotate(boolean toRight) {
         return this;
     }
 
-    public AVL getRight() {
+    public Multiset getRight() {
         throw new RuntimeException("getRight called on empty tree!");
     }
 
-    public AVL getLeft() {
+    public Multiset getLeft() {
         throw new RuntimeException("getLeft called on empty tree!");
     }
 
-    public D getData() {
+    public Comparable<D> getData() {
         throw new RuntimeException("getData called on empty tree!");
+    }
+
+    public Multiset add(D data) {
+        return new AVLTree(this, this, data);
     }
 
 }
