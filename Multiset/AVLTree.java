@@ -56,9 +56,9 @@ public class AVLTree<D extends Comparable<D>> implements Multiset<D> {
         if (this.data.compareTo(data) == 0) {
             newSet = this;
         } else if (this.data.compareTo(data) > 0) {
-            newSet = right.add(data);
+            newSet = new AVLTree(right.add(data), left, this.data);
         } else {
-            newSet = left.add(data);
+            newSet = new AVLTree(right, left.add(data), this.data);
         }
         return balance(newSet);
     }
