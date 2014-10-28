@@ -3,13 +3,13 @@ package Multiset;
 /**
  * Created by User on 10/26/2014.
  */
-public class AVLTree<D extends Comparable<D>> implements Multiset<D> {
+public class AVLTree<D extends Comparable<D>> implements AVL<D> {
 
-    private Multiset right;
-    private Multiset left;
+    private AVL right;
+    private AVL left;
     private D data;
 
-    public AVLTree(Multiset right, Multiset left, D data) {
+    public AVLTree(AVL right, AVL left, D data) {
         this.right = right;
         this.left = left;
         this.data = data;
@@ -23,7 +23,7 @@ public class AVLTree<D extends Comparable<D>> implements Multiset<D> {
         return 1 + Math.max(right.height(), left.height());
     }
 
-    public Multiset rotate(boolean toRight) {
+    public AVL rotate(boolean toRight) {
         if (toRight) {
             if (!left.isEmpty()) {
                 return new AVLTree(new AVLTree(left.getRight(), right, data),left.getLeft(), left.getData());
@@ -39,20 +39,20 @@ public class AVLTree<D extends Comparable<D>> implements Multiset<D> {
         }
     }
 
-    public Multiset getRight() {
+    public AVL getRight() {
         return right;
     }
 
-    public Multiset getLeft() {
+    public AVL getLeft() {
         return left;
     }
 
-    public Comparable<D> getData() {
+    public D getData() {
         return data;
     }
 
-    public Multiset add(D data) {
-        Multiset newSet;
+    public AVL add(D data) {
+        AVL newSet;
         if (this.data.compareTo(data) == 0) {
             newSet = this;
         } else if (this.data.compareTo(data) > 0) {
@@ -63,9 +63,15 @@ public class AVLTree<D extends Comparable<D>> implements Multiset<D> {
         return balance(newSet);
     }
 
-    private static Multiset balance(Multiset tree) {
+    public boolean member(D data) {
+        if (this.data.compareTo(data) > 0) return right.member(data);
+        else if (this.data.compareTo(data) < 0) return left.member(data);
+        else return true;
+    }
+
+    private static AVL balance(AVL tree) {
         if (!tree.isEmpty()) {
-            Multiset newSet = new AVLTree(balance(tree.getRight()), balance(tree.getLeft()), tree.getData());
+            AVL newSet = new AVLTree(balance(tree.getRight()), balance(tree.getLeft()), tree.getData());
             if ((newSet.getLeft().height() - newSet.getRight().height()) > 1) {
                 //left is overweight
                 if (newSet.getLeft().getLeft().height() > newSet.getLeft().getRight().height()) {
