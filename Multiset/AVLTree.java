@@ -3,13 +3,13 @@ package Multiset;
 /**
  * Created by User on 10/26/2014.
  */
-public class AVLTree<D extends Comparable<D>> implements AVL<D> {
+public class AVLTree<D extends Comparable<D>> implements Multiset<D> {
 
-    private AVL right;
-    private AVL left;
-    private D data;
+    private Multiset right;
+    private Multiset left;
+    private MSContainer<D> data;
 
-    public AVLTree(AVL right, AVL left, D data) {
+    public AVLTree(Multiset right, Multiset left, MSContainer<D> data) {
         this.right = right;
         this.left = left;
         this.data = data;
@@ -23,7 +23,7 @@ public class AVLTree<D extends Comparable<D>> implements AVL<D> {
         return 1 + Math.max(right.height(), left.height());
     }
 
-    public AVL rotate(boolean toRight) {
+    public Multiset rotate(boolean toRight) {
         if (toRight) {
             if (!left.isEmpty()) {
                 return new AVLTree(new AVLTree(left.getRight(), right, data),left.getLeft(), left.getData());
@@ -39,23 +39,23 @@ public class AVLTree<D extends Comparable<D>> implements AVL<D> {
         }
     }
 
-    public AVL getRight() {
+    public Multiset getRight() {
         return right;
     }
 
-    public AVL getLeft() {
+    public Multiset getLeft() {
         return left;
     }
 
-    public D getData() {
+    public MSContainer<D> getData() {
         return data;
     }
 
-    public AVL add(D data) {
-        AVL newSet;
-        if (this.data.compareTo(data) == 0) {
+    public Multiset add(D data) {
+        Multiset newSet;
+        if (this.data.getData().compareTo(data) == 0) {
             newSet = this;
-        } else if (this.data.compareTo(data) > 0) {
+        } else if (this.data.getData().compareTo(data) > 0) {
             newSet = new AVLTree(right.add(data), left, this.data);
         } else {
             newSet = new AVLTree(right, left.add(data), this.data);
@@ -63,15 +63,38 @@ public class AVLTree<D extends Comparable<D>> implements AVL<D> {
         return balance(newSet);
     }
 
-    public boolean member(D data) {
-        if (this.data.compareTo(data) > 0) return right.member(data);
-        else if (this.data.compareTo(data) < 0) return left.member(data);
-        else return true;
+    /*
+
+    public Multiset remove(D data) {
+        if (this.data.getData().compareTo(data) == 0) {
+            if (this.getData().getCount() > 1)
+                return new AVLTree(right, left, new MSContainer(data, this.getData().getCount() - 1));
+            else
+
+        }
+    }
+    */
+
+    public Sequence seq() {
+        return this;
     }
 
-    private static AVL balance(AVL tree) {
+    public boolean notEmpty() {
+        return true;
+    }
+
+    public D here() {
+        return data.getData();
+    }
+
+    public Sequence next() {
+        return this; //placeholder
+        //return this.remove(data.getData());
+    }
+
+    private static Multiset balance(Multiset tree) {
         if (!tree.isEmpty()) {
-            AVL newSet = new AVLTree(balance(tree.getRight()), balance(tree.getLeft()), tree.getData());
+            Multiset newSet = new AVLTree(balance(tree.getRight()), balance(tree.getLeft()), tree.getData());
             if ((newSet.getLeft().height() - newSet.getRight().height()) > 1) {
                 //left is overweight
                 if (newSet.getLeft().getLeft().height() > newSet.getLeft().getRight().height()) {
