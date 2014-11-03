@@ -88,8 +88,7 @@ public class AVLTree<D extends Comparable<D>> implements Multiset<D> {
     }
 
     public Sequence next() {
-        return this; //placeholder
-        //return this.remove(data.getData());
+        return new HeadlessTree(this.getRight(), this.getLeft());
     }
 
     private static Multiset balance(Multiset tree) {
