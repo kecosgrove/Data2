@@ -21,8 +21,8 @@ public class MSContainer<D extends Comparable<D>> implements Comparable<MSContai
         return count;
     }
 
-    public int compareTo(MSContainer container) {
-        return data.compareTo((D)container.getData());
+    public int compareTo(MSContainer<D> container) {
+        return data.compareTo(container.getData());
     }
 
 }

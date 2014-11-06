@@ -63,17 +63,64 @@ public class AVLTree<D extends Comparable<D>> implements Multiset<D> {
         return balance(newSet);
     }
 
-    /*
-
-    public Multiset remove(D data) {
-        if (this.data.getData().compareTo(data) == 0) {
-            if (this.getData().getCount() > 1)
-                return new AVLTree(right, left, new MSContainer(data, this.getData().getCount() - 1));
-            else
-
+    public int multiplicity(D data) {
+        if (data.compareTo(this.data.getData()) == 0) {
+            return this.data.getCount();
+        } else if (data.compareTo(this.data.getData()) > 0) {
+            return right.multiplicity(data);
+        } else {
+            return left.multiplicity(data);
         }
     }
-    */
+
+    public int cardinality() {
+        return data.getCount() + right.cardinality() + left.cardinality();
+    }
+
+    public Multiset remove(D data) {
+        if (data.compareTo(this.data.getData()) == 0) {
+            if (this.data.getCount() <= 1) {
+                return right.union(left);
+            } else {
+                return new AVLTree(right, left, new MSContainer(data, this.data.getCount() - 1));
+            }
+        } else if (data.compareTo(this.data.getData()) > 0) {
+            return new AVLTree(right.remove(data), left, this.data);
+        } else {
+            return new AVLTree(right, left.remove(data), this.data);
+        }
+    }
+
+    public Multiset union(Multiset set) {
+        while (set.multiplicity(data.getData()) < data.getCount()) {
+            set = set.add(data.getData());
+        }
+        return set.union(right).union(left);
+    }
+
+    public Multiset combine(Multiset set) {
+        int count = data.getCount();
+        for (int i = 0; i < count; i++) {
+            set = set.add(data.getData());
+        }
+        return set.combine(right).combine(left);
+    }
+
+    public Multiset difference(Multiset set) {
+        Sequence<D> sequence = this.seq();
+        while (sequence.notEmpty()) {
+            set = set.remove(sequence.here());
+            sequence = sequence.next();
+        }
+        return set;
+    }
+
+    public Multiset intersection(Multiset set) {
+        while (set.multiplicity(data.getData()) > data.getCount()) {
+            set = set.remove(data.getData());
+        }
+        return set.intersection(right).intersection(left);
+    }
 
     public Sequence seq() {
         return this;

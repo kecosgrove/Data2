@@ -5,6 +5,10 @@ package Multiset;
  */
 public class AVLEmpty<D extends Comparable<D>> implements Multiset<D> {
 
+    public static Multiset empty() {
+        return new AVLEmpty();
+    }
+
     public boolean isEmpty() {
         return true;
     }
@@ -33,7 +37,31 @@ public class AVLEmpty<D extends Comparable<D>> implements Multiset<D> {
         return new AVLTree(this, this, new MSContainer(data, 1));
     }
 
+    public int multiplicity(D data) {
+        return 0;
+    }
+
+    public int cardinality() {
+        return 0;
+    }
+
     public Multiset remove(D data) {
+        return this;
+    }
+
+    public Multiset union(Multiset set) {
+        return set;
+    }
+
+    public Multiset combine(Multiset set) {
+        return set;
+    }
+
+    public Multiset difference(Multiset set) {
+        return set;
+    }
+
+    public Multiset intersection(Multiset set ) {
         return this;
     }
 
