@@ -49,6 +49,10 @@ public class AVLEmpty<D extends Comparable<D>> implements Multiset<D> {
         return this;
     }
 
+    public boolean subset(Multiset set) {
+        return true;
+    }
+
     public Multiset union(Multiset set) {
         return set;
     }

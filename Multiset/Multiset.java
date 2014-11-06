@@ -16,6 +16,7 @@ public interface Multiset<D extends Comparable<D>> extends Sequenced, Sequence<D
     public int cardinality();
     public Multiset add(D data);
     public Multiset remove(D data);
+    public boolean subset(Multiset set);
     public Multiset union(Multiset set);
     public Multiset combine(Multiset set);
     public Multiset difference(Multiset set);

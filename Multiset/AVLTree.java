@@ -91,6 +91,10 @@ public class AVLTree<D extends Comparable<D>> implements Multiset<D> {
         }
     }
 
+    public boolean subset(Multiset set) {
+        return (data.getCount() < set.multiplicity(data.getData())) && right.subset(set) && left.subset(set);
+    }
+
     public Multiset union(Multiset set) {
         while (set.multiplicity(data.getData()) < data.getCount()) {
             set = set.add(data.getData());
