@@ -1,11 +1,13 @@
 package Multiset;
 
 /**
- * Created by User on 10/26/2014.
+ * An empty AVL tree.
+ * @author Kevin Cosgrove
  */
-public class AVLEmpty<D extends Comparable<D>> implements Multiset<D> {
 
-    public static Multiset empty() {
+public class AVLEmpty<D extends Comparable<D>> implements Multiset<D>, AVLMultiset<D> {
+
+    public static AVLMultiset empty() {
         return new AVLEmpty();
     }
 
@@ -17,15 +19,15 @@ public class AVLEmpty<D extends Comparable<D>> implements Multiset<D> {
         return 0;
     }
 
-    public Multiset rotate(boolean toRight) {
+    public AVLMultiset rotate(boolean toRight) {
         return this;
     }
 
-    public Multiset getRight() {
+    public AVLMultiset getRight() {
         throw new RuntimeException("getRight called on empty tree!");
     }
 
-    public Multiset getLeft() {
+    public AVLMultiset getLeft() {
         throw new RuntimeException("getLeft called on empty tree!");
     }
 
@@ -33,7 +35,7 @@ public class AVLEmpty<D extends Comparable<D>> implements Multiset<D> {
         throw new RuntimeException("getData called on empty tree!");
     }
 
-    public Multiset add(D data) {
+    public AVLMultiset add(D data) {
         return new AVLTree(this, this, new MSContainer(data, 1));
     }
 
@@ -45,16 +47,22 @@ public class AVLEmpty<D extends Comparable<D>> implements Multiset<D> {
         return 0;
     }
 
-    public Multiset remove(D data) {
+    public AVLMultiset remove(D data) {
         return this;
     }
 
     public boolean subset(Multiset set) {
-        return true;
+        return false;
     }
 
-    public Multiset union(Multiset set) {
-        return set;
+    public AVLMultiset union(Multiset set) {
+        Sequence<D> sequence = set.seq();
+        AVLMultiset newSet = this;
+        while (sequence.notEmpty()) {
+            newSet = newSet.add(sequence.here());
+            sequence = sequence.next();
+        }
+        return newSet;
     }
 
     public Multiset combine(Multiset set) {
@@ -62,7 +70,7 @@ public class AVLEmpty<D extends Comparable<D>> implements Multiset<D> {
     }
 
     public Multiset difference(Multiset set) {
-        return set;
+        return this;
     }
 
     public Multiset intersection(Multiset set ) {

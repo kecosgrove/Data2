@@ -1,7 +1,7 @@
 package Multiset;
 
 /**
- * Created by User on 11/2/2014.
+ * A tree with subtrees but no data.
  */
 class HeadlessTree<D> implements Sequence<D> {
     Sequence<D> left;

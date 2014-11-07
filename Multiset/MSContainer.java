@@ -1,9 +1,9 @@
 package Multiset;
 
 /**
- * Created by User on 10/28/2014.
+ * A container which stores an item and a count of how many items the container represents.
  */
-public class MSContainer<D extends Comparable<D>> implements Comparable<MSContainer<D>> {
+public class MSContainer<D extends Comparable<D>> {
 
     private D data;
     private int count;
